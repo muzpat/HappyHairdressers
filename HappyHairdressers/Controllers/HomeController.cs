@@ -16,6 +16,9 @@ namespace Hairdressers.Controllers
             public string date { get; set; }
             public string datedetail { get; set; }
             public string time { get; set; }
+            public string phone { get; set; }
+            public string style { get; set; }
+            public string info { get; set; }
 
         }
 
@@ -70,6 +73,9 @@ namespace Hairdressers.Controllers
                     if (result != null)
                     {
                         calEntry.customer = result.name;
+                        calEntry.phone = result.phone;
+                        calEntry.style = result.style;
+                        calEntry.info = result.info;
                     }
                     daycal.Add(calEntry);
                     j++;
@@ -140,6 +146,9 @@ namespace Hairdressers.Controllers
                     if (result != null)
                     {
                         calEntry.customer = result.name;
+                        calEntry.phone = result.phone;
+                        calEntry.style = result.style;
+                        calEntry.info = result.info;
                     }
                     daycal.Add(calEntry);
                     j++;

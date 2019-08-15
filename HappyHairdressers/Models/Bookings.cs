@@ -58,7 +58,7 @@ namespace Hairdressers.Models
                 addBooking.time = "12:00";
                 currentBookings.Add(addBooking);
                 addBooking = new Booking();
-                addBooking.name = "Jackie";
+                addBooking.name = "Jackie's Mum";
                 addBooking.phone = "0766554433";
                 addBooking.style = "Perm";
                 addBooking.info = "Frizzy hair";
@@ -67,7 +67,7 @@ namespace Hairdressers.Models
                 addBooking.time = "14:00";
                 currentBookings.Add(addBooking);
                 addBooking = new Booking();
-                addBooking.name = "Jackie";
+                addBooking.name = "Gita";
                 addBooking.phone = "0766554433";
                 addBooking.style = "Perm";
                 addBooking.info = "Frizzy hair";
@@ -76,7 +76,7 @@ namespace Hairdressers.Models
                 addBooking.time = "15:00";
                 currentBookings.Add(addBooking);
                 addBooking = new Booking();
-                addBooking.name = "Jackie";
+                addBooking.name = "Gita's Mum";
                 addBooking.phone = "0766554433";
                 addBooking.style = "Perm";
                 addBooking.info = "Frizzy hair";
@@ -85,7 +85,7 @@ namespace Hairdressers.Models
                 addBooking.time = "09:00";
                 currentBookings.Add(addBooking);
                 addBooking = new Booking();
-                addBooking.name = "Jackie";
+                addBooking.name = "Mrs Mop";
                 addBooking.phone = "0766554433";
                 addBooking.style = "Perm";
                 addBooking.info = "Frizzy hair";
