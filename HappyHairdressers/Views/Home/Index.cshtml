@@ -1,31 +1,120 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "H";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+<h2>Happy Hairdressers</h2>
+
+<p>
+    <b> Home Page  </b>
+</p>
+
+<p>
+    @*@Html.ActionLink("Make An Appointment", "Appointment")*@
+    <a id="appAnchor" href="#" class="mylink" onclick="linkaction(this)" style="color:#2a6496">Book an Appointment</a>
+</p>
+<p>
+    @*@Html.ActionLink("Hairdresser Logon", "Publish")*@
+    <a id="appAnchor" href="#" class="mylink" onclick="whoamI(this)" style="color:#2a6496">Stylists' Page</a>
+</p>
+<p>
+    @Html.ActionLink("Management Admin", "Management")
+</p>
+
+
+
+
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+        });
+        function linkaction(e) {
+
+            $('<div></div>').appendTo('body')
+            .html('<div><h6>' + 'Stylist: '
+                  + '<br/>   <p> </p>'
+        + '   <select id="postage">                      '
+        + '       <option value="">Please select...</option>    '
+        + '       <option value="1">Anyone Available</option>    '
+        + '       <option value="2">Tina Sparkle</option>      '
+        + '       <option value="3">Frank Ferret</option>      '
+        + '       <option value="4">Marie</option>      '
+        + '       <option value="5">Holly Bush</option>      '
+        + '   </select>' + '</h6></div>')
+                            .dialog({
+                                modal: true, title: 'Choose a Stylist ', zIndex: 10000, autoOpen: true,
+                                width: 'auto', resizable: false,
+                                buttons: {
+                                    Cancel: function () {
+                                        $(this).dialog("close");
+                                    },
+                                    Book: function () {
+                                        var Name = $('#postage').find(":selected").text();
+
+                                        window.location.href = '@Url.Action("GoToAppointment", "Home")' + '?stylist=' + Name;
+                                        @*$.ajax({
+                                            url: '@Url.Action("GoToAppointment", "Home")',
+                                            type: 'GET',
+                                            dataType: 'html',
+                                            contentType: 'application/json; charset=utf-8',
+                                            data: { stylist: Name }
+                                        })*@
+                                        $(this).dialog("close");
+                                    }
+                                },
+                                close: function (event, ui) {
+
+                                    $(this).remove();
+                                }
+                            });
+        }
+
+        function whoamI(e) {
+
+            $('<div></div>').appendTo('body')
+            .html('<div><h6>' + 'Stylist: '
+                  + '<br/>   <p> </p>'
+        + '   <select id="postage">                      '
+        + '       <option value="">Please select...</option>    '
+     //   + '       <option value="1">Anyone Available</option>    '
+        + '       <option value="2">Tina Sparkle</option>      '
+        + '       <option value="3">Frank Ferret</option>      '
+        + '       <option value="4">Marie</option>      '
+        + '       <option value="5">Holly Bush</option>      '
+        + '   </select>' + '</h6></div>')
+                            .dialog({
+                                modal: true, title: 'You Are? ', zIndex: 10000, autoOpen: true,
+                                width: 'auto', resizable: false,
+                                buttons: {
+                                    Cancel: function () {
+                                        $(this).dialog("close");
+                                    },
+                                    Go: function () {
+                                        var Name = $('#postage').find(":selected").text();
+
+                                        window.location.href = '@Url.Action("Hairdresser", "Home")' + '?stylist=' + Name;
+                                        @*$.ajax({
+                                            url: '@Url.Action("GoToAppointment", "Home")',
+                                            type: 'GET',
+                                            dataType: 'html',
+                                            contentType: 'application/json; charset=utf-8',
+                                            data: { stylist: Name }
+                                        })*@
+                                        $(this).dialog("close");
+                                    }
+                                },
+                                close: function (event, ui) {
+
+                                    $(this).remove();
+                                }
+                            });
+        }
+
+
+
+
+    </script>
+
+}
