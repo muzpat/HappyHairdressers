@@ -214,5 +214,17 @@ namespace Hairdressers.Controllers
 
             return View();
         }
+        public ActionResult Blog()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+        public ActionResult Splash()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
     }
 }
