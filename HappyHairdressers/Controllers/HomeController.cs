@@ -70,6 +70,7 @@ namespace Hairdressers.Controllers
                     calEntry.stylist = stylist;
                     calEntry.customer = "";
                     var result = thebook.Find(x => x.date == DateTime.Today.AddDays(i).ToShortDateString() && x.time == timeStr && x.stylist == stylist);
+
                     if (result != null)
                     {
                         calEntry.customer = result.name;
@@ -99,6 +100,81 @@ namespace Hairdressers.Controllers
             return View("Appointment");
 
 
+        }
+        
+        [HttpGet]
+        public ActionResult GetAppointmentsAnyone(string stylist)
+        {
+
+            List<bookingview> daycal = new List<bookingview>();
+            if (stylist == null)
+            {
+                return RedirectToAction("Index");
+            }
+            ViewBag.Stylist = stylist;
+
+            Bookings myBookings = new Bookings();
+            List<Booking> thebook = myBookings.GetBookings();
+
+            List<string> myDates = new List<string>();
+            List<string> myDays = new List<string>();
+            //    myDates.Add(DateTime.Today.ToShortDateString());
+            int i = 0;
+            while (i <= 6)
+            {
+                int j = 9;
+                while (j <= 17)
+                {
+                    bookingview calEntry = new bookingview();
+                    calEntry.date = DateTime.Today.AddDays(i).ToShortDateString();
+                    if (i == 0)
+                    {
+                        calEntry.datedetail = "Today";
+                    }
+                    else
+                    {
+                        calEntry.datedetail = DateTime.Today.AddDays(i).DayOfWeek.ToString();
+                    }
+                    var timeStr = j.ToString() + ":00";
+                    if (j == 9)
+                    {
+                        timeStr = "0" + timeStr;
+                    }
+                    calEntry.time = timeStr;
+                    calEntry.stylist = stylist;
+                    calEntry.customer = "";
+                    //  var result = thebook.Find(x => x.date == DateTime.Today.AddDays(i).ToShortDateString() && x.time == timeStr && x.stylist == stylist);
+                    List<string> freestylists = myBookings.GetAvailableStylists(calEntry.date, timeStr);
+                    if (freestylists != null && freestylists.Count > 0)
+                    {
+                        if (j % 2 == 1)
+                            calEntry.customer = freestylists.First();
+                        else
+                            calEntry.customer = freestylists.Last();
+                      //  calEntry.phone = result.phone;
+                      //  calEntry.style = result.style;
+                      //  calEntry.info = result.info;
+                    }
+                    daycal.Add(calEntry);
+                    j++;
+                }
+
+                myDates.Add(DateTime.Today.AddDays(i).ToShortDateString());
+                i++;
+
+            }
+            ViewBag.BookingDates = myDates;
+
+            myDays.Add("Today");
+            i = 1;
+            while (i <= 6)
+            {
+                myDays.Add(DateTime.Today.AddDays(i).DayOfWeek.ToString());
+                i++;
+
+            }
+            ViewBag.BookingDays = myDays;
+            return Json(daycal, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -170,8 +246,6 @@ namespace Hairdressers.Controllers
             }
             ViewBag.BookingDays = myDays;
             return Json(daycal, JsonRequestBehavior.AllowGet);
-
-
         }
 
         [HttpGet]
@@ -226,5 +300,80 @@ namespace Hairdressers.Controllers
 
             return View();
         }
+
+        public ActionResult Anyone(string stylist)
+        {
+
+            List<bookingview> daycal = new List<bookingview>();
+            if (stylist == null)
+            {
+             ///   return RedirectToAction("Index");
+                stylist = "Anyone Available";
+            }
+            ViewBag.Stylist = stylist;
+
+            Bookings myBookings = new Bookings();
+            List<Booking> thebook = myBookings.GetBookings();
+
+            List<string> myDates = new List<string>();
+            List<string> myDays = new List<string>();
+            //    myDates.Add(DateTime.Today.ToShortDateString());
+            int i = 0;
+            while (i <= 6)
+            {
+                int j = 9;
+                while (j <= 17)
+                {
+                    bookingview calEntry = new bookingview();
+                    calEntry.date = DateTime.Today.AddDays(i).ToShortDateString();
+                    if (i == 0)
+                    {
+                        calEntry.datedetail = "Today";
+                    }
+                    else
+                    {
+                        calEntry.datedetail = DateTime.Today.AddDays(i).DayOfWeek.ToString();
+                    }
+                    var timeStr = j.ToString() + ":00";
+                    if (j == 9)
+                    {
+                        timeStr = "0" + timeStr;
+                    }
+                    calEntry.time = timeStr;
+                    calEntry.stylist = stylist;
+                    calEntry.customer = "";
+                      var result = thebook.Find(x => x.date == DateTime.Today.AddDays(i).ToShortDateString() && x.time == timeStr); // && x.stylist == stylist);
+
+                 //   string freestylists = myBookings.GetAvailableStylists(calEntry.date, timeStr);
+                    if (result != null  )
+                    {
+                        calEntry.customer =  result.name;
+                      //  calEntry.phone = result.phone;
+                      //  calEntry.style = result.style;
+                      //  calEntry.info = result.info;
+                    }
+                    daycal.Add(calEntry);
+                    j++;
+                }
+
+                myDates.Add(DateTime.Today.AddDays(i).ToShortDateString());
+                i++;
+
+            }
+            ViewBag.BookingDates = myDates;
+
+            myDays.Add("Today");
+            i = 1;
+            while (i <= 6)
+            {
+                myDays.Add(DateTime.Today.AddDays(i).DayOfWeek.ToString());
+                i++;
+
+            }
+            ViewBag.BookingDays = myDays;
+            return View("Anyone");
+
+        }
+
     }
 }

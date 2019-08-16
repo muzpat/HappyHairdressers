@@ -29,7 +29,7 @@ namespace Hairdressers.Models
             else
             {
                 currentBookings = new List<Booking>();
-             
+
                 Booking addBooking = new Booking();
                 addBooking.name = "Jackie";
                 addBooking.phone = "0766554433";
@@ -81,7 +81,7 @@ namespace Hairdressers.Models
                 addBooking.style = "Perm";
                 addBooking.info = "Frizzy hair";
                 addBooking.stylist = "Tina Sparkle";
-                addBooking.date = DateTime.Today.AddDays(1).ToShortDateString(); 
+                addBooking.date = DateTime.Today.AddDays(1).ToShortDateString();
                 addBooking.time = "09:00";
                 currentBookings.Add(addBooking);
                 addBooking = new Booking();
@@ -95,12 +95,6 @@ namespace Hairdressers.Models
                 currentBookings.Add(addBooking);
 
                 context.Session["bookings"] = currentBookings;
-
-
-
-
-
-
             }
         }
         public List<Booking> AddBooking(string name, string phone, string style, string info, string stylist, string date, string time)
@@ -124,6 +118,42 @@ namespace Hairdressers.Models
             currentBookings = (List<Booking>)context.Session["bookings"];
             currentBookings = currentBookings.OrderBy(o => o.date).ThenBy(c => c.time).ThenBy(c => c.stylist).ToList();
             return currentBookings;
+        }
+
+        public List<string> GetAvailableStylists(string date, string time)
+        {
+
+            HttpContext context = HttpContext.Current;
+            currentBookings = (List<Booking>)context.Session["bookings"];
+            List<string> myStrings = new List<string>();
+            string output = "";
+            var result = currentBookings.Find(x => x.date == date && x.time == time && x.stylist == "Tina Sparkle");
+            if (result == null)
+            {
+                output = output + " " + "Tina Sparkle";
+                myStrings.Add("Tina Sparkle");
+            }
+            result = currentBookings.Find(x => x.date == date && x.time == time && x.stylist == "Frank Ferret");
+            if (result == null)
+            {
+                output = output + " " + "Frank Ferret";
+                myStrings.Add("Frank Ferret");
+            }
+            result = currentBookings.Find(x => x.date == date && x.time == time && x.stylist == "Marie");
+            if (result == null)
+            {
+                output = output + " " + "Marie";
+                myStrings.Add("Marie");
+            }
+            result = currentBookings.Find(x => x.date == date && x.time == time && x.stylist == "Holly Bush");
+
+            if (result == null)
+            {
+                output = output + " " + "Holly Bush";
+                myStrings.Add("Holly Bush");
+            }
+
+            return myStrings;
         }
     }
 }

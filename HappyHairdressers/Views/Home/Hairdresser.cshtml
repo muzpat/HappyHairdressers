@@ -187,7 +187,25 @@
             }
             var ch = e.text.length;
             if (ch > 115) {
-                alert('This slot is already booked!');
+
+                $('<div></div>').appendTo('body')
+                    .html('<div><h6>' + 'Error '
+                          + '<br/>   <p> </p>'
+       + '</h6></div>')
+                    .dialog({
+                        modal: true, title: 'This Slot Has Been Taken! ', zIndex: 10000, autoOpen: true,
+                        width: 'auto', resizable: false,
+                        buttons: {
+                            Cancel: function () {
+                                $(this).dialog("close");
+                            },
+
+                        },
+                        close: function (event, ui) {
+
+                            $(this).remove();
+                        }
+                    });
             } else {
 
                 $('<div></div>').appendTo('body')

@@ -28,6 +28,7 @@
             @*<a class="p-2 text-dark" href="#">Management Admin</a>*@
             @*@Html.ActionLink("Management Admin", "Management")*@
             <a class="p-2 text-dark" href="/Home/Management">Management Admin</a>
+            <a class="p-2 text-dark" href="/Home/Blog">Blog</a>
         </nav>
         @*<a class="btn btn-outline-primary" href="#">Sign up</a>*@
     </div>
@@ -74,7 +75,7 @@
                     <h4 class="my-0 font-weight-normal">Elite</h4>
                 </div>
                 <div class="card-body">
-                    <h1 class="card-title pricing-card-title">£30 <small class="text-muted">/ Colour Treatment</small></h1>
+                    <h1 class="card-title pricing-card-title">£30 <small class="text-muted">/ Colouring</small></h1>
                     <ul class="list-unstyled mt-3 mb-4">
                         <li>Top Stylist</li>
                         <li>Free Shampoo</li>
@@ -167,8 +168,12 @@
                                     },
                                     Book: function () {
                                         var Name = $('#postage').find(":selected").text();
+                                        if (Name == "Anyone Available") {
+                                            window.location.href = '@Url.Action("Anyone", "Home")' + '?stylist=' + Name;
+                                        } else {
+                                              window.location.href = '@Url.Action("GoToAppointment", "Home")' + '?stylist=' + Name;
+                                        }
 
-                                        window.location.href = '@Url.Action("GoToAppointment", "Home")' + '?stylist=' + Name;
                                         @*$.ajax({
                                             url: '@Url.Action("GoToAppointment", "Home")',
                                             type: 'GET',
@@ -208,15 +213,8 @@
                                     },
                                     Go: function () {
                                         var Name = $('#postage').find(":selected").text();
-
                                         window.location.href = '@Url.Action("Hairdresser", "Home")' + '?stylist=' + Name;
-                                        @*$.ajax({
-                                            url: '@Url.Action("GoToAppointment", "Home")',
-                                            type: 'GET',
-                                            dataType: 'html',
-                                            contentType: 'application/json; charset=utf-8',
-                                            data: { stylist: Name }
-                                        })*@
+
                                         $(this).dialog("close");
                                     }
                                 },

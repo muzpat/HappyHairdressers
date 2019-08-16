@@ -12,12 +12,12 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-         
+
             var myParam = '@ViewBag.Stylist';
             var mydata = { stylist: myParam };
-       
+
             $.ajax({
-                url: '@Url.Action("GetAppointments", "Home")',
+                url: '@Url.Action("GetAppointmentsAnyone", "Home")',
                 type: "GET",
                 cache: false,
                 contentType: "application/json; charset=utf-8",
@@ -28,23 +28,24 @@
                 success: function (response) {
                     var data = response;
                 //    $('#Grid').append('<table><tr><th>Date</th><th>Time</th><th>Stylist</th><th>Customer</th><th>Phone</th><th>Style</th><th>Info</th></tr>');
-                  
+
                     var row = '';
                     row = '<div  id="rw1" class="row">  ';
                     for (var i = 0; i < data.length; ++i) {
                         if (data[i].time == "09:00") {
-                           
+
                             row = row + '    <div id="col1" class="col">         <div class="card"   id="card2" style="width: 18rem;">            <div  id="ch2" class="card-header">';
                             row = row + '<b>' + data[i].datedetail + '</b></br>' + data[i].date;
                             row = row + '</div> <ul class="list-group list-group-flush"> ';
-                     
+
                         }
                         var situation = data[i].time + ' ' + data[i].customer;
-                        if (situation.length > 6) {
-                            situation = "Not Available";
+
+                        if (data[i].customer === null || data[i].customer == '') {
+                            situation = data[i].time +  "Not Available";
                         }
 
-                        row = row + ' <li     class="list-group-item"><a  id="a' + data[i].date.replace('/', '').replace('/', '') + data[i].time.replace(':', '') + '" data-date="' + data[i].date + '"  data-time="' + data[i].time + '" href="#" class="mylink" style= "color:blue">' + situation + '</a></li>';
+                        row = row + ' <li     class="list-group-item"><a  id="a' + data[i].date.replace('/', '').replace('/', '') + data[i].time.replace(':', '') + '" data-date="' + data[i].date + '" data-stylist="' + data[i].customer + '"  data-time="' + data[i].time + '" href="#" class="mylink" style= "color:blue">' + situation + '</a></li>';
 
                             if (data[i].time == "17:00") {
                                 row = row + '</ul>   </div>  </div>'
@@ -52,7 +53,7 @@
 
                             //    $('#Grid').append(row);
                             //   row = '';
-                       
+
                      //   row = row + '</div> '
                          //   $('#Grid').append(row);
                           //  row = '';
@@ -73,12 +74,12 @@
 
 
         function OnSuccess(response) {
-            debugger;
+        
             var data = $.parseJSON(response);
 
             //   alert(data.BeeHive[0].beeType);
             $('#Grid').append('<table><tr><th>Date</th><th>Time</th><th>Stylist</th><th>Customer</th><th>Phone</th><th>Style</th><th>Info</th></tr>');
-            debugger;
+       
             for (var i = 0; i < data.length; ++i) {
                 //                 $('#Grid').append('<div class="name">' + ToJavaScriptDate(data[i].review_date) + ' ' + data[i].review_stage
                 //                     + ' ' + data[i].ops_product_id + ' ' + data[i].ProducT_sub_group_code
@@ -106,10 +107,10 @@
         });
         function book(name, Phone, Style, Info,  e) {
             var myId = e.id;
-
+     
             var aDate;
             var aTime;
-
+            var stylist;
             for (var i = 0; i < e.attributes.length; ++i) {
 
                 if ( e.attributes[i].name == 'data-date') {
@@ -118,13 +119,16 @@
                 if ( e.attributes[i].name == 'data-time') {
                     aTime = e.attributes[i].value;
                 }
+                if (e.attributes[i].name == 'data-stylist') {
+                    stylist = e.attributes[i].value;
+                }
 
             }
 
 
             var Xexisting =  $('#' + myId )
             var existing =  $('#' + myId ).text();
-            var myData = {name: name, phone: Phone, style: Style, info: Info, stylist:  '@ViewBag.Stylist', date: aDate   , time: aTime}
+            var myData = {name: name, phone: Phone, style: Style, info: Info, stylist: stylist, date: aDate   , time: aTime}
             existing = existing + ' ' + name;
             $('#' + myId ).html( existing);
 
@@ -143,6 +147,25 @@
         }
 
         function OnSuccess(response) {
+            $('<div></div>').appendTo('body')
+.html('<div><h6>' + 'Successfully Booked!'
++ '<br/>   <p> </p>'
++ '</h6></div>')
+.dialog({
+    modal: true, title: 'Result ', zIndex: 10000, autoOpen: true,
+    width: 'auto', resizable: false,
+    buttons: {
+        OK: function () {
+            window.location.href = '@Url.Action("Index", "Home")';
+            $(this).dialog("close");
+        },
+
+    },
+    close: function (event, ui) {
+
+        $(this).remove();
+    }
+});
         }
         function OnErrorCall(jqXHR, textStatus, errorThrown) {
             debugger;
@@ -157,7 +180,7 @@
         //       alert('jQuery.ui loaded');
         //   }
             var ch = e.text.length;
-            if (ch > 8) {
+            if (ch > 800) {
                 $('<div></div>').appendTo('body')
     .html('<div><h6>' + 'This Slot Has Been Taken!'
           + '<br/>   <p> </p>'
